@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+
   pull_request:
     branches:
       - main
@@ -32,7 +33,32 @@ jobs:
       - name: Run backend tests
         working-directory: backend
         run: npm test
+
       - name: Build backend Docker image
         run: docker build -t devops-backend ./backend
+
       - name: Build frontend Docker image
         run: docker build -t devops-frontend ./frontend
+
+      - name: Login to Docker Hub
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Tag backend image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: docker tag devops-backend ${{ secrets.DOCKERHUB_USERNAME }}/devops-backend:latest
+
+      - name: Push backend image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/devops-backend:latest
+
+      - name: Tag frontend image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: docker tag devops-frontend ${{ secrets.DOCKERHUB_USERNAME }}/devops-frontend:latest
+
+      - name: Push frontend image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/devops-frontend:latest
