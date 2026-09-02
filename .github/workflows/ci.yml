@@ -34,3 +34,5 @@ jobs:
         run: npm test
       - name: Build backend Docker image
         run: docker build -t devops-backend ./backend
+      - name: Build frontend Docker image
+        run: docker build -t devops-frontend ./frontend
