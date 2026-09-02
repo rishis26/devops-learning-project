@@ -1,3 +1,17 @@
 # DevOps Learning Project
 
-A basic MERN application used to learn DevOps fundamentals.
+A basic MERN-style application created to learn and practice DevOps fundamentals.
+
+## Project Structure
+
+```text
+devops_learning_project/
+├── backend/
+│   ├── package.json
+│   └── server.js
+├── frontend/
+│   ├── package.json
+│   └── server.js
+├── .gitignore
+└── README.md
+```
